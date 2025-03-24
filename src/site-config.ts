@@ -1,8 +1,8 @@
 export const siteConfig = {
   author: 'Taisei Onishi',
-  title: 'Vitesse theme for Astro',
-  subtitle: 'Vitesse theme for Astro, supports Vue and UnoCSS.',
-  description: 'A Minimal, SEO-friendly portfolio and blog theme for Astro.',
+  title: 'Kotobase',
+  subtitle: '',
+  description: '',
   image: {
     src: '/hero.jpg',
     alt: 'Website Main Image',

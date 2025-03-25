@@ -13,7 +13,7 @@ tag: Flutter, Dart, Riverpod
 
 https://twitter.com/FlutterDev/status/1598074394181599262?s=20&t=xzavpqI2zE0U4vT-i8w7vA
 
-Flutter公式の「**List of state management approaches**」でもRiverpodが紹介されています！
+Flutter公式の「***List of state management approaches***」でもRiverpodが紹介されています！
 これまではRiverpodの前身のProviderパッケージがFlutter公式推奨として紹介されていましたが、ついにRiverpodも公式推奨となりました✨
 
 https://docs.flutter.dev/development/data-and-backend/state-mgmt/options#riverpod
@@ -42,18 +42,17 @@ https://github.com/taiseidev/riverpod-sample
 では、解説していきます🚀
 
 # 目次
-[1.Riverpodの概要](https://qiita.com/drafts/4c9d9572a56051a1d51f/edit#riverpod%E3%81%AE%E6%A6%82%E8%A6%81)
-[2.実際に使ってみよう](https://qiita.com/drafts/4c9d9572a56051a1d51f/edit#%E5%AE%9F%E9%9A%9B%E3%81%AB%E4%BD%BF%E3%81%A3%E3%81%A6%E3%81%BF%E3%82%88%E3%81%86)
+[1.Riverpodの概要](https://qiita.com/drafts/4c9d9572a56051a1d51f/edit#riverpod%E3%81%AE%E6%A6%82%E8%A6%81)<br>
+[2.実際に使ってみよう](https://qiita.com/drafts/4c9d9572a56051a1d51f/edit#%E5%AE%9F%E9%9A%9B%E3%81%AB%E4%BD%BF%E3%81%A3%E3%81%A6%E3%81%BF%E3%82%88%E3%81%86)<br>
 [3.Riverpod2.0](https://qiita.com/drafts/4c9d9572a56051a1d51f/edit#riverpod20)
 
 # Riverpodの概要
 
 Riverpodとは、状態管理パッケージとして主流だったProviderパッケージを進化させる形で開発された、リアクティブなキャッシュとデータバインディングの状態管理パッケージです。
 
-:::note warn
-**本記事の注意点**
-「Provider」という文言がややこしいので、Riverpodの前身を「**Providerパッケージ**」とし、RiverpodとProviderパッケージで使われるProviderを「**Provider**」とします。
-:::
+> **本記事の注意点：**
+> 「Provider」という文言がややこしいので、Riverpodの前身を「***Providerパッケージ***」とし、RiverpodとProviderパッケージで使われるProviderを「***Provider***とします。
+
 では、Riverpodで何が進化したかを学ぶためにも、Providerパッケージの主な欠点を確認していきましょう！
 
 ProviderパッケージはInheritedWidgetを改良する形で開発されたパッケージでWidgetツリーに依存します。
@@ -62,12 +61,10 @@ ProviderパッケージはInheritedWidgetを改良する形で開発されたパ
 
 (画像は[Flutter Riverpod 2.0: The Ultimate Guide](https://codewithandrea.com/articles/flutter-state-management-riverpod/)からお借りしました)
 
-画像のように、親のWidgetツリーを見て登録されているProviderにアクセスする事が出来ます。裏を返すと親のWidgetツリーには使用したいProviderが登録されている必要があるため、もしProviderが登録がされていない場合は`ProviderNotFoundException`エラーが発生してしまいます。
+画像のように、親のWidgetツリーを見て登録されているProviderにアクセスする事が出来ます。裏を返すと親のWidgetツリーには使用したいProviderが登録されている必要があるため、もしProviderが登録がされていない場合は***ProviderNotFoundException***エラーが発生してしまいます。
 
-:::note info
-実際にサンプルアプリでも`ProviderNotFoundException`を発生させるサンプルを作成してみました。
-確認したい方は`provider_package`ディレクトリ`main()`からアプリを起動させてみてください！
-:::
+> 実際にサンプルアプリでも***ProviderNotFoundException***を発生させるサンプルを作成してみました。
+確認したい方は***provider_package***ディレクトリ***main()***からアプリを起動させてみてください！
 
 一方でRiverpodは、ProviderをWidgetツリーから切り離してグローバルに定義する事が出来るため、定義したProviderに確実にアクセスする事が出来ます🚀
 
@@ -105,7 +102,7 @@ dependencies:
   flutter_riverpod: ^2.1.1 // 追加
 ```
 
-次に`ProviderScope`でアプリ全体をラップします
+次に***ProviderScope***でアプリ全体をラップします
 
 ```dart
 void main() {
@@ -275,13 +272,13 @@ abstract class PostsDataSource implements IPostsDataSource {
 }
 
 ```
-retrofitはメソッド（@GET）、エンドポイント、パスやクエリを定義するだけでAPIクライアントの実体を生成してくれる便利なパッケージです。`IPostsDataSource`を継承している部分は後ほど説明します。
+retrofitはメソッド（@GET）、エンドポイント、パスやクエリを定義するだけでAPIクライアントの実体を生成してくれる便利なパッケージです。***IPostsDataSource***を継承している部分は後ほど説明します。
 抽象クラスの作成が終わったらターミナルで下記コマンドを実行
 
 ```terminal
 flutter pub run build_runner watch --delete-conflicting-outputs
 ```
-`posts_data_source.g.dart`ファイルが自動で生成されます。
+***posts_data_source.g.dart***ファイルが自動で生成されます。
 
 ここでやっとRiverpodのProviderが出てきたので解説します。
 
@@ -292,7 +289,7 @@ final postsDataSourceProvider = Provider<PostsDataSource>((ref) {
   );
 });
 ```
-ここでは`Provider`を使ってPostsDataSourceのインスタンスを公開しています。`Provider`は変更できない値を公開できるProvider群の一つで、今回のようにAPIクライアントやRepositoryクラスを公開する時などに役立ちます。
+ここでは***Provider***を使ってPostsDataSourceのインスタンスを公開しています。***Provider***は変更できない値を公開できるProvider群の一つで、今回のようにAPIクライアントやRepositoryクラスを公開する時などに役立ちます。
 
 また、PostsDataSourceの引数にDioのインスタンスを返却するdioProviderを渡しています。こういったDioのインスタンスのように複数インスタンスを作る必要がないものをProviderで公開することによって使い回しやすくなります。こういった点もRiverpodのメリットかなと思います。
 
@@ -375,7 +372,7 @@ class StubPostsDataSource implements IPostsDataSource {
 
 ```
 
-API通信を行う`PostsDataSource`とローカルのダミーデータを取得する`StubPostsDataSource`は、抽象クラスである`IPostsDataSource`を継承しているのでどちらもコンストラクタで渡す事が可能です。
+API通信を行う***PostsDataSource***とローカルのダミーデータを取得する***StubPostsDataSource***は、抽象クラスである***IPostsDataSource***を継承しているのでどちらもコンストラクタで渡す事が可能です。
 
 ```dart
 import 'package:riverpod_sample/riverpod/data/models/qiita_post.dart';
@@ -385,19 +382,15 @@ abstract class IPostsDataSource {
 }
 ```
 
-:::note info
-Dartでは「暗黙的インターフェース」を活用することによって、明示的にインターフェースを定義しなくても別クラスが別クラスをインターフェイスとして実装することが可能です。
-
-今回の場合ですと、`i_posts_data_source.dart`を削除して、`StubPostsDataSource`が実装しているIPostsDataSourceをAPIクライアントの `PostsDataSource`に換えてあげれば完了です🙆‍♂️
-
+> Dartでは「暗黙的インターフェース」を活用することによって、明示的にインターフェースを定義しなくても別クラスが別クラスをインターフェイスとして実装することが可能です。
+今回の場合ですと、***i_posts_data_source.dart***を削除して、***StubPostsDataSource***が実装しているIPostsDataSourceをAPIクライアントの ***PostsDataSource***に換えてあげれば完了です🙆‍♂️
 インターフェースを定義する必要がなくなるので、クラスを差し替えるだけであれば「暗黙的インターフェース」をうまく活用した方が良さそうですね。
-:::
 
 https://dart.dev/language/classes#implicit-interfaces
 
-Repositoryでは`PostsRepository`の引数にIPostsDataSourceを返す`dataSourceProvider`を渡す形で実装しています。
-しかし、`dataSourceProvider`はデフォルトで未実装のエラー（UnimplementedError）を投げるようにしているためどこかでoverrideしてあげる必要があります。
-どこでoverrideしてあげるかというと、`main.dart`のProviderScope内で行います。
+Repositoryでは***PostsRepository***の引数にIPostsDataSourceを返す***dataSourceProvider***を渡す形で実装しています。
+しかし、***dataSourceProvider***はデフォルトで未実装のエラー（UnimplementedError）を投げるようにしているためどこかでoverrideしてあげる必要があります。
+どこでoverrideしてあげるかというと、***main.dart***のProviderScope内で行います。
 
 ```dart
 void main() {
@@ -414,12 +407,10 @@ void main() {
 }
 
 ```
-これでAPI通信を行うか、ダミーデータを取得するかを`main.dart`で簡単に変更する事が出来るようになりました！
+これでAPI通信を行うか、ダミーデータを取得するかを***main.dart***で簡単に変更する事が出来るようになりました！
 
-:::note warn
-`overrideWithProvider`というメソッドもありますが現在は非推奨となっています。
-代わりに今回サンプルで使用したのと同じ`overrideWith`を使用してください。
-:::
+> ***overrideWithProvider***というメソッドもありますが現在は非推奨となっています。
+代わりに今回サンプルで使用したのと同じ***overrideWith***を使用してください。
 
 RiverpodのDIについては下記が参考になりました。
 
@@ -459,7 +450,7 @@ final postsViewModelProvider = FutureProvider.autoDispose<List<QiitaPost>>(
 
 ```
 
-ViewModelは`FutureProvider`を使って実装しています。`FutureProvider`は非同期操作が可能なProviderで、戻り値が`AsyncValue`という特殊な型になっています。このAsyncValueを使ってView側ではデータ取得時、エラー時、ローディング時に表示させるWidgetを自動的に切り替えています。
+ViewModelは***FutureProvider***を使って実装しています。***FutureProvider***は非同期操作が可能なProviderで、戻り値が***AsyncValue***という特殊な型になっています。このAsyncValueを使ってView側ではデータ取得時、エラー時、ローディング時に表示させるWidgetを自動的に切り替えています。
 （最初使った時結構感動しました）
 
 ```dart
@@ -476,7 +467,7 @@ Widget build(BuildContext context, WidgetRef ref) {
 }
 ```
 
-AsycValueについては下記の記事が参考になります。
+AsyncValueについては下記の記事が参考になります。
 
 https://zenn.dev/tsuruo/articles/52f62fc78df6d5
 
@@ -518,8 +509,8 @@ ViewでProviderにアクセスする場合は下記の変更が必要です。
     );
 // 省略
 ```
-buildメソッド内に`ref.listen`というものを使っていますが、こちらもRiverpodの機能の一つです。
-`ref.listen`はプロバイダの値を監視し、値が変化するたびに第二引数に指定したコールバックが発火します。今回はerrorMessageProviderを監視して、エラーメッセージが入ったらダイアログが表示される形で実装しています。
+buildメソッド内に***ref.listen***というものを使っていますが、こちらもRiverpodの機能の一つです。
+***ref.listen***はプロバイダの値を監視し、値が変化するたびに第二引数に指定したコールバックが発火します。今回はerrorMessageProviderを監視して、エラーメッセージが入ったらダイアログが表示される形で実装しています。
 
 <img src='https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/2466417/ee32cf0b-0e86-87d1-b11f-13711da199f5.gif' width='350'>
 
@@ -624,8 +615,7 @@ typedef DioRef = AutoDisposeProviderRef<Dio>;
 
 また、riverpod_generatarを使用するとデフォルトでautoDispose修飾子がついたProviderが生成されるようになっています。
 
-:::note info
-「Providerへの参照がなくなっても状態を保持したいのにriverpod_generatorを使うとデフォルトでautoDisposeされてしまう.... 」とお困りの方もいるかもしれません。そんな方は`keepAlive`を使う事で解決します。
+> 「Providerへの参照がなくなっても状態を保持したいのにriverpod_generatorを使うとデフォルトでautoDisposeされてしまう.... 」とお困りの方もいるかもしれません。そんな方は***keepAlive***を使う事で解決します。
 
 ```dart
 // keepAlive: trueにすることでアプリがkillされない限り状態が保持される
@@ -681,19 +671,12 @@ final asyncValue = ref.watch(postProvider(postId: 0, type: ''));
 
 riverpod_generatorのおかげでますますRiverpodが使いやすくなりましたね！
 
-:::note warn
-**注意点**
-riverpod_generatorは現在2種類のProviderしかサポートされていません。
+> **注意点:**
+> riverpod_generatorは現在2種類のProviderしかサポートされていません。
 **・Provider**
 **・FutureProvider**
-:::
-
-### 2. NotifierとAsyncNotifier
-
-**更新中**
 
 今回はRiverpodを使ったサンプルアプリの実装とRiverpod2.0について書いてみました！
-まだ未完成の記事なので適宜修正、追記していこうと思います。もしよろしければ「いいね」を押していただけますと嬉しいです！
 
 ## 参考文献
 

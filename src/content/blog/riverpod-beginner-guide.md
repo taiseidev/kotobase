@@ -11,12 +11,12 @@ tag: Flutter, Dart, Riverpod
 ## はじめに
 2022年12月1日、ついにRiverpodがFlutter公式の動画で紹介されました🚀
 
-https://twitter.com/FlutterDev/status/1598074394181599262?s=20&t=xzavpqI2zE0U4vT-i8w7vA
+[X - post by @FlutterDev](https://twitter.com/FlutterDev/status/1598074394181599262?s=20&t=xzavpqI2zE0U4vT-i8w7vA)
 
 Flutter公式の「***List of state management approaches***」でもRiverpodが紹介されています！
 これまではRiverpodの前身のProviderパッケージがFlutter公式推奨として紹介されていましたが、ついにRiverpodも公式推奨となりました✨
 
-https://docs.flutter.dev/development/data-and-backend/state-mgmt/options#riverpod
+[riverpod](https://docs.flutter.dev/development/data-and-backend/state-mgmt/options#riverpod)
 
 日本では既に様々なプロジェクトでRiverpodが採用されていると思いますが、
 Flutter公式が推奨することによりさらにRiverpodの人気が世界中で高まっていく事が予想されます🚀
@@ -37,7 +37,7 @@ Riverpod2.0をキャッチアップはまだだよ〜って方にも読んでい
 
 今回作成したサンプルアプリは下記から確認する事が出来ます。
 
-https://github.com/taiseidev/riverpod-sample
+[riverpod-sample](https://github.com/taiseidev/riverpod-sample)
 
 では、解説していきます🚀
 
@@ -76,7 +76,7 @@ ProviderパッケージはInheritedWidgetを改良する形で開発されたパ
 
 そのほかにもRiverpodのメリットは沢山ありますが、全て書いてると長くなりそうなので下記の記事をご覧ください🙇‍♂️
 
-https://medium.com/flutter-jp/state-1daa7fd66b94
+[Flutterの状態管理手法の選定](https://medium.com/flutter-jp/state-1daa7fd66b94)
 
 ## 実際に使ってみよう
 では実際にRiverpodを学んでいきましょう🔥
@@ -121,11 +121,11 @@ ProviderScopeは作成したすべてのProviderの状態を保存してくれ�
 ### 2. サンプルアプリを作ろう
 今回作るアプリはQiitaのAPIを使ってタグで投稿を検索アプリを作成します。
 
-https://qiita.com/api/v2/docs#get-apiv2tagstag_iditems
+[GET /api/v2/tags/:tag_id/items](https://qiita.com/api/v2/docs#get-apiv2tagstag_iditems)
 
 アーキテクチャ（ディレクトリ構成）は下記を参考にさせていただいています。
 
-https://github.com/wasabeef/flutter-architecture-blueprints
+[flutter-architecture-blueprints](https://github.com/wasabeef/flutter-architecture-blueprints)
 
 **今回作るアプリ**
 
@@ -225,7 +225,7 @@ abstract class User with _$User {
 
 freezedを使ったデータクラスの作成については下記が参考になります。
 
-https://zenn.dev/sakusin/articles/b19e9a2c3829e0
+[Flutter freezed のチートシート、もとい、知っている人向けのメモ](https://zenn.dev/sakusin/articles/b19e9a2c3829e0)
 
 ### ②APIクライアントの実装
 今回API通信はretrofitを使います。下記パッケージをインストールしてください。
@@ -307,7 +307,7 @@ final dioProvider = Provider<Dio>((_) {
 ```
 Providerについてのもっと詳しく知りたい方は公式ドキュメントを参照ください。
 
-https://riverpod.dev/ja/docs/providers/provider
+[Provider](https://riverpod.dev/ja/docs/providers/provider)
 
 ### ③Repositoryを作成
 次にDataSourceにアクセスするためのRepositoryを作成します。
@@ -386,7 +386,7 @@ abstract class IPostsDataSource {
 今回の場合ですと、***i_posts_data_source.dart***を削除して、***StubPostsDataSource***が実装しているIPostsDataSourceをAPIクライアントの ***PostsDataSource***に換えてあげれば完了です🙆‍♂️
 インターフェースを定義する必要がなくなるので、クラスを差し替えるだけであれば「暗黙的インターフェース」をうまく活用した方が良さそうですね。
 
-https://dart.dev/language/classes#implicit-interfaces
+[Implicit interfaces](https://dart.dev/language/classes#implicit-interfaces)
 
 Repositoryでは***PostsRepository***の引数にIPostsDataSourceを返す***dataSourceProvider***を渡す形で実装しています。
 しかし、***dataSourceProvider***はデフォルトで未実装のエラー（UnimplementedError）を投げるようにしているためどこかでoverrideしてあげる必要があります。
@@ -411,10 +411,6 @@ void main() {
 
 > ***overrideWithProvider***というメソッドもありますが現在は非推奨となっています。
 代わりに今回サンプルで使用したのと同じ***overrideWith***を使用してください。
-
-RiverpodのDIについては下記が参考になりました。
-
-https://flutter-square.com/riverpod-di-layered-architecture/
 
 ### ④ViewModelを作成
 
@@ -469,7 +465,7 @@ Widget build(BuildContext context, WidgetRef ref) {
 
 AsyncValueについては下記の記事が参考になります。
 
-https://zenn.dev/tsuruo/articles/52f62fc78df6d5
+[Riverpod v2のAsyncValueを理解する](https://zenn.dev/tsuruo/articles/52f62fc78df6d5)
 
 ### ⑤Viewを作成
 Viewは一部抜粋して解説していきます。
@@ -521,7 +517,7 @@ buildメソッド内に***ref.listen***というものを使っていますが�
 ## Riverpod2.0
 ここからは8/31,9/1に開催されたFlutterVikingsで発表されたRiverpod2.0について勉強していきましょう！
 
-https://youtu.be/C2Zp731g8Es
+<iframe width="560" height="315" src="https://www.youtube.com/embed/C2Zp731g8Es?si=zhdQ7TYo5_X7E0H7" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 Riverpod2.0のポイントは下記の二つです。
 
@@ -543,7 +539,7 @@ Riverpod2.0のポイントは下記の二つです。
 どのProviderを使うべきか悩みますよね？
 そんな悩みをriverpod_generatorを使えば解決してくれるかもしれません！
 
-https://pub.dev/packages/riverpod_generator
+[riverpod-generator](https://pub.dev/packages/riverpod_generator)
 
 **パッケージを追加**
 riverpod_generatorを使用するために下記のパッケージを追加
@@ -680,17 +676,17 @@ riverpod_generatorのおかげでますますRiverpodが使いやすくなりま
 
 ## 参考文献
 
-https://codewithandrea.com/articles/flutter-state-management-riverpod/
+[Flutter Riverpod 2.0: The Ultimate Guide](https://codewithandrea.com/articles/flutter-state-management-riverpod/)
 
-https://codewithandrea.com/articles/flutter-riverpod-generator/
+[flutter-riverpod-generator](https://codewithandrea.com/articles/flutter-riverpod-generator/)
 
-https://codewithandrea.com/articles/flutter-riverpod-async-notifier/
+[flutter-riverpod-async-notifier](https://codewithandrea.com/articles/flutter-riverpod-async-notifier/)
 
-https://codewithandrea.com/articles/unit-test-async-notifier-riverpod/
+[unit-test-async-notifier-riverpod](https://codewithandrea.com/articles/unit-test-async-notifier-riverpod/)
 
-https://codewithandrea.com/articles/flutter-riverpod-data-caching-providers-lifecycle/
+[flutter-riverpod-data-caching-providers-lifecycle](https://codewithandrea.com/articles/flutter-riverpod-data-caching-providers-lifecycle/)
 
-https://medium.com/flutter-jp/state-1daa7fd66b94
+[Flutterの状態管理手法の選定](https://medium.com/flutter-jp/state-1daa7fd66b94)
 
 ## 余談
 ちなみに今回作成したサンプルアプリのデータクラスは最近流行りの[ChatGPT](https://chat.openai.com/chat)に作ってもらいました。（一部修正）。技術の進歩って凄いですね。

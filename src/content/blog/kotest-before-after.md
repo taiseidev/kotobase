@@ -17,11 +17,9 @@ kotestに限らずテストコードを書く際にbefore,afterといったテ�
 kotest: v5.9.1
 
 ## 対象者
-```
 - Kotlinでテストを書く際にbeforeやafterの使い方を学びたい方
 - Kotestを使いこなしたい初心者〜中級者向け
 - テストの前後処理を効率的に行いたい方
-```
 
 ## kotestのbefore,afterの種類
 
@@ -341,12 +339,9 @@ class KotestLifecycleDemo : DescribeSpec({
 ```
 
 ## まとめ
-
-```
 - beforeとafterはテストの前後処理を自動化するために使い、beforeTest/afterTest、beforeEach/afterEach、beforeAll/afterAllと使い分けが可能です。
 - beforeEachやafterEachを使うことで、個別のテストケースの前後で処理を行うことができ、テストが独立して実行されるようになります。
 - beforeAllやafterAllは、全体的なセットアップやクリーンアップを行うために使用します。
-```
 
 テストの前後処理を適切に使いこなすことで、テストコードの可読性や保守性が向上し、効率的にテストを実行できるようになります。是非、beforeやafterを活用して、テストの品質を向上させましょう。
 

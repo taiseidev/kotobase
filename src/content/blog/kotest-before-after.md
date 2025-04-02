@@ -1,30 +1,31 @@
 ---
-title: kotestのbefore,afterについてまとめてみた
-description: kotestで使えるbefore/after系のライフサイクル関数をまとめて解説。使い分けに迷う方に向けて、実際のコード例とともに詳しく紹介します。
+title: KotestのLifecycle hooksについてまとめてみた
+description: Kotestで使えるbefore/after系のライフサイクル関数をまとめて解説。使い分けに迷う方に向けて、実際のコード例とともに詳しく紹介します。
 duration: 10min
 date: 2025-3-29
 lang: ja-JP
-draft: true
-tag: kotlin,kotest,自動テスト
+draft: false
+tag: Kotlin,Kotest,自動テスト
 ---
 
 ## はじめに
 
-kotestに限らずテストコードを書く際にbefore,afterといったテスト準備やクリーンアップ処理を書くことがあると思いますが、種類が多くてどれを使えばいいのか分からなかったので今回まとめてみました。
-どのように活用できるかを実際のコードを交えながら解説していくので、是非kotestを使ったテストコードを書く際の参考にしていただけたら嬉しいです！
+Kotestに限らず、テストコードを書く際にはbefore/afterといった前後処理関数を使うことがあります。ただ、Kotestではそれらの関数が非常に多く用意されており、結局どれを使えば良いのか迷うことがあるかと思います。
+
+そこで今回は、Kotestで使えるライフサイクル系のbefore/after関数について、実際のコード例を交えてまとめてみました。
+どのように活用できるかを実際のコードを交えながら解説していくので、是非、Kotestを使ったテストコードを書く際の参考にしていただけたら嬉しいです！
 
 ### version
-kotest: v5.9.1
+Kotest: ver 5.9.1
 
 ## 対象者
-- Kotlinでテストを書く際にbeforeやafterの使い方を学びたい方
+- Kotlinでテストを書く際にbefore/afterの使い方を学びたい方
 - Kotestを使いこなしたい初心者〜中級者向け
 - テストの前後処理を効率的に行いたい方
 
-## kotestのbefore,afterの種類
+## Kotestのbefore/afterの種類
 
-[Lifecycle hooks](https://kotest.io/docs/framework/lifecycle-hooks.html) <br>
-上記の公式ドキュメントを確認すると、こんなに沢山のbefore,after関数が用意されていることが分かります。
+Kotestには多くのライフサイクル関数が用意されており、以下のようなものがあります（公式：[Lifecycle hooks](https://kotest.io/docs/framework/lifecycle-hooks.html)）：
 
 | 関数名            |
 |-------------------|
@@ -42,18 +43,16 @@ kotest: v5.9.1
 | beforeInvocation   |
 | afterInvocation    |
 
-> 公式ドキュメントでは***prepareSpec***というメソッドが記載されていますが、[Sanitize prepareSpec and finalizeSpec behavior ](https://github.com/kotest/kotest/pull/1617/files#diff-cead89fdee3b0f2c28eb11479c5e4e8a7124877fa30ee93b591c58e75f5e8652)でDeprecatedになり、現在は使用できないです。代わりに***beforeSpec***を使うことを推奨されています。
-
-次の章から各々がどういった動作をするかを解説していきます。
+> 公式ドキュメントでは***prepareSpec***というメソッドが記載されていますが、[Sanitize prepareSpec and finalizeSpec behavior ](https://github.com/kotest/kotest/pull/1617/files#diff-cead89fdee3b0f2c28eb11479c5e4e8a7124877fa30ee93b591c58e75f5e8652)でDeprecatedになり、現在は使用できないです。
 
 ### 前提
 
-今回はkotestの中でもDescribeSpecを使って解説してきますが、他のkotestの書き方を使っても基本的には動作に変わりはありません。
-DescribeSpecを使ったことがない方のためにDescribeSpecの簡単な使い方を解説します。
+今回はKotestの中でも***DescribeSpec***を使って解説してきますが、他のKotestの書き方を使っても基本的には動作に変わりはありません。
+***DescribeSpec***を使ったことがない方のために簡単な使い方を解説します。慣れている方は読み飛ばしてください。
 
-DescribeSpecは、テストケースを階層構造で整理しやすいBDDスタイルのSpecです。
-テスト対象の機能や振る舞いを describe {} ブロックで表現し、その中で条件ごとの前提を context {} で区切り、個別の動作確認をit{}で記述するのが特徴です。
-簡単に説明すると、***describe***にテスト対象のクラスや関数名を記入、***context***でテスト条件を指定、***it***で結果を記載し個別のテストを行なっていく形になります。
+***DescribeSpec***は、テストケースを階層構造で整理しやすい***BDDスタイル***のSpecです。
+テスト対象の機能や振る舞いをdescribe {} ブロックで表現し、その中で条件ごとの前提をcontext{}で区切り、個別の動作確認をit{}で記述するのが特徴です。
+簡単に説明すると、***describe***にテスト対象のクラスや関数名を記述、***context***でテスト条件を指定、***it***で結果を記述し、個別のテストを行なっていきます。
 
 ```kotlin
 class SampleTest : DescribeSpec({
@@ -73,9 +72,9 @@ class SampleTest : DescribeSpec({
 })
 ```
 
-このように、describe → context → it の構造にすることで、テストの意図を自然な言葉で表現でき、可読性の高いテストを書くことができます。
+このように、describe→context→itの構造にすることで、テストの意図を自然な言葉で表現でき、可読性の高いテストを書くことができます。
 
-## 1. Spec単位で1回だけ実行
+## 1. Spec単位で1回だけ実行される関数
 
 |関数名|説明|
 |---|---|
@@ -118,18 +117,18 @@ class KotestLifecycleDemo : DescribeSpec({
 [finalizeSpec] Spec終了後のクリーンアップ処理
 ```
 
-Specとはkotestにおけるテストクラスのインスタンスのことを指します。
+SpecとはKotestにおけるテストクラスのインスタンスのことを指します。
 つまり、今回のケースだと***KotestLifecycleDemo***インスタンスが作成された際に***beforeSpec***が実行され、すべてのテストケースが終了した際に***afterSpec***が実行されます。
 ***finalizeSpec***はあまり使う機会はないかもしれませんが、***afterSpec***が実行された後に実行されます。
 
 上記の用途としては、***beforeSpec***でDBのインスタンスを立ち上げて、***afterSpec***でDBの接続を切るといった使い方ができると思います。
 
-## 2. 各テストの直前・直後に実行されるもの
+## 2. 各テスト関数の前後で実行される関数
 
 |関数名|説明|
 |---|---|
 |beforeEach|各テスト関数の直前に毎回実行。共通の前準備に使用する|
-|afterEach|各テスト関数の直後に毎回実行。テストの後処理やクリーンアップに使用する|
+|afterEach|各テスト関数の直後に毎回実行。テストの後処理やクリーンアップに使用する。テストが失敗した場合も必ず実行される。|
 
 ```kotlin
 class KotestLifecycleDemo : DescribeSpec({
@@ -163,14 +162,14 @@ class KotestLifecycleDemo : DescribeSpec({
 [afterEach] 各テスト単位の後に実行
 ```
 
-***beforeEach***と***afterEach***はシンプルで、各テストが実行される前後に実行されます。
+***beforeEach***/***afterEach***はシンプルで、各テスト（***it***）が実行される前後に実行されます。
 
-## 3. Container（describe/contextなどのブロック）実行前後
+## 3. describe/contextブロックの前後で実行される関数
 
 |関数名|説明|
 |---|---|
-|beforeContainer|describeやcontextなどのブロックの直前に実行|
-|afterContainer|ブロックのすべてのテストが終わった後に実行|
+|beforeContainer|describeやcontextなどのブロックの直前に実行。|
+|afterContainer|ブロックのすべてのテストが終わった後に実行。テストが失敗した場合も必ず実行される。|
 
 ```kotlin
 class KotestLifecycleDemo : DescribeSpec({
@@ -228,24 +227,25 @@ class KotestLifecycleDemo : DescribeSpec({
 [afterContainer] Containerの後に実行
 ```
 
-***beforeContainer***と***afterContainer***は、各***describe***や***context***ブロックの中に実行対象となるテスト（***it***）がある場合に限り、そのブロックの実行前後に1回ずつ実行されます。<br>
+***beforeContainer***/***afterContainer***は、各***describe***や***context***ブロックの中に実行対象となるテスト（***it***）がある場合に限り、そのブロックの実行前後に1回ずつ実行されます。<br>
 注意点として、ブロック内に有効なテストが1つもない場合（すべてスキップなど）には呼ばれません。
 
-## 4. 全てのTestType毎に呼ばれるもの
+## 4. すべてのTestTypeに対して実行される関数
 
 |関数名|説明|
 |---|---|
-|beforeAny|最初のテストやコンテナのどこよりも前に1回だけ実行。ライフサイクルの一番最初に実行|
-|afterAny|最後のテストやコンテナの全てが終わった後に1回だけ実行。ログや全体のサマリ出力に便利|
+|beforeAny|各TestCase（describe,context,itなど）の直前に呼ばれる。ラムダでTestCaseを受け取る。|
+|afterAny|各TestCaseの実行後に呼ばれる。スキップされたテストには呼ばれない。ラムダでTuple2<TestCase, TestResult>を受けとる。テストが失敗した場合も必ず実行される。|
 
 ```kotlin
 class KotestLifecycleDemo : DescribeSpec({
-    beforeAny {
-        println("[beforeAny] Spec評価の最初に1回だけ実行")
+
+    beforeAny { testCase: TestCase ->
+        println("[beforeAny] 実行前: ${testCase.name.testName} - type: ${testCase.type.name}")
     }
 
-    afterAny {
-        println("[afterAny] Specの全テストが終わった後に1回だけ実行")
+    afterAny { (testCase, result) ->
+        println("[afterAny] 実行後: ${testCase.name.testName} - type: ${testCase.type.name} - result: ${result.status}")
     }
 
     describe("ライフサイクルテスト - describe ブロック") {
@@ -273,53 +273,74 @@ class KotestLifecycleDemo : DescribeSpec({
 ```
 
 ```
-[beforeContainer] Containerの前に呼ばれます
+[beforeAny] 実行前: ライフサイクルテスト - describe ブロック - type: Container
+[beforeAny] 実行前: テストケース1 - type: Test
 → テストケース1 実行中
+[afterAny] 実行後: テストケース1 - type: Test - result: Success
+[beforeAny] 実行前: テストケース2 - type: Test
 → テストケース2 実行中
-[beforeContainer] Containerの前に呼ばれます
+[afterAny] 実行後: テストケース2 - type: Test - result: Success
+[beforeAny] 実行前: ライフサイクルテスト - context ブロック - type: Container
+[beforeAny] 実行前: テストケース3 - type: Test
 → テストケース3 実行中
+[afterAny] 実行後: テストケース3 - type: Test - result: Success
+[beforeAny] 実行前: テストケース4 - type: Test
 → テストケース4 実行中
-[afterContainer] Containerの後に呼ばれます
-[afterContainer] Containerの後に呼ばれます
+[afterAny] 実行後: テストケース4 - type: Test - result: Success
+[afterAny] 実行後: ライフサイクルテスト - context ブロック - type: Container - result: Success
+[afterAny] 実行後: ライフサイクルテスト - describe ブロック - type: Container - result: Success
 ```
 
-## 5. テストの各 invocation（繰り返し）に対して呼ばれるもの
+***beforeAny***/***afterAny***は***beforeEach***/***afterEach***と違って全てのTestTypeの前後で実行されます。
+そもそもTestTypeとは何かについて、TestTypeはKotest内部で定義されているenumで、このTestCaseがどういう種類かを区別するために使われます。
+
+|type|説明|
+|---|---|
+|TestType.Test|通常のテストケースに使われる（it {}やshould {}など）。実行されるテスト本体。|
+|TestType.Container|グループ化されたテスト構造（describe {}やcontext {}など）に使われる。ラムダ内にitなどのテストを書く構造。|
+|TestType.Dynamic|forAll {}やcheckAll {}などの動的に生成されるテストケースに使われる。|
+
+2章で各テスト毎に実行される***beforeEach***/***afterEach***について説明しましたが、これらはTestType.Testの時のみ実行され、***beforeAny***/***afterAny***は全てのTestTypeの前後において実行されるということになります。
+
+> ***beforeTest***/***afterTest***に関しては***beforeAny***/***afterAny***と基本的には同じ挙動なので今回は省略します。
+
+## 5. テストの繰り返し（invocation）ごとに実行される関数
 
 |関数名|説明|
 |---|---|
-|beforeTest|各テストの開始前に呼ばれる。beforeEachと似ているが、内部的なフック|
-|afterTest|各テストの終了後に呼ばれる。afterEachと似ているが、テスト全体の結果などにアクセスできる|
-|beforeInvocation|テスト関数が複数回（リトライ、反復など）呼ばれる場合に。各実行の直前に呼ばれる。iは何回メカのインデックス。|
-|afterInvocation|各invocationの後に呼ばれる。複数回実行するテスト（例えばinvocations = 5）の後処理に使える。|
+|beforeInvocation|テスト関数が複数回実行される場合に、各実行（invocation）の直前に呼ばれる。第一引数ではTestCaseクラスを受け取り、第二引数では現在の実行回数を受け取る。|
+|afterInvocation|各実行（invocation）の直後に呼ばれる。こちらも***beforeInvocation***と同様の引数を受け取る|
+
+> 注意点: 第二引数のインデックスはListのインデックスと同様に 0から始まります
 
 ```kotlin
 class KotestLifecycleDemo : DescribeSpec({
 
-    beforeContainer {
-        println("[beforeContainer] Containerの前に呼ばれます")
+    beforeInvocation { testCase: TestCase, iteration: Int ->
+        println("  → [beforeInvocation] ${testCase.name.testName} : invocation #$iteration")
     }
 
-    afterContainer {
-        println("[afterContainer] Containerの後に呼ばれます")
+    afterInvocation { testCase: TestCase, iteration: Int ->
+        println("  → [afterInvocation] ${testCase.name.testName} : invocation #$iteration")
     }
 
     describe("ライフサイクルテスト - describe ブロック") {
 
-        it("テストケース1") {
+        it("テストケース1（3回繰り返し）").config(invocations = 3) {
             println("→ テストケース1 実行中")
         }
 
-        it("テストケース2") {
+        it("テストケース2（1回のみ）") {
             println("→ テストケース2 実行中")
         }
 
         context("ライフサイクルテスト - context ブロック") {
 
-            it("テストケース3") {
+            it("テストケース3（2回繰り返し）").config(invocations = 2) {
                 println("→ テストケース3 実行中")
             }
 
-            it("テストケース4") {
+            it("テストケース4（1回のみ）") {
                 println("→ テストケース4 実行中")
             }
         }
@@ -328,21 +349,68 @@ class KotestLifecycleDemo : DescribeSpec({
 ```
 
 ```
-[beforeContainer] Containerの前に呼ばれます
+  → [beforeInvocation] ライフサイクルテスト - describe ブロック : invocation #0
+  → [beforeInvocation] テストケース1（3回繰り返し） : invocation #0
 → テストケース1 実行中
+  → [afterInvocation] テストケース1（3回繰り返し） : invocation #0
+  → [beforeInvocation] テストケース1（3回繰り返し） : invocation #1
+→ テストケース1 実行中
+  → [afterInvocation] テストケース1（3回繰り返し） : invocation #1
+  → [beforeInvocation] テストケース1（3回繰り返し） : invocation #2
+→ テストケース1 実行中
+  → [afterInvocation] テストケース1（3回繰り返し） : invocation #2
+  → [beforeInvocation] テストケース2（1回のみ） : invocation #0
 → テストケース2 実行中
-[beforeContainer] Containerの前に呼ばれます
+  → [afterInvocation] テストケース2（1回のみ） : invocation #0
+  → [beforeInvocation] ライフサイクルテスト - context ブロック : invocation #0
+  → [beforeInvocation] テストケース3（2回繰り返し） : invocation #0
 → テストケース3 実行中
+  → [afterInvocation] テストケース3（2回繰り返し） : invocation #0
+  → [beforeInvocation] テストケース3（2回繰り返し） : invocation #1
+→ テストケース3 実行中
+  → [afterInvocation] テストケース3（2回繰り返し） : invocation #1
+  → [beforeInvocation] テストケース4（1回のみ） : invocation #0
 → テストケース4 実行中
-[afterContainer] Containerの後に呼ばれます
-[afterContainer] Containerの後に呼ばれます
+  → [afterInvocation] テストケース4（1回のみ） : invocation #0
+  → [afterInvocation] ライフサイクルテスト - context ブロック : invocation #0
+  → [afterInvocation] ライフサイクルテスト - describe ブロック : invocation #0
+```
+
+Kotestの***it***は***TestWithConfigBuilder***を返します。このビルダーが持つ***config***関数を用いることで、各テストケースに対して設定を追加できます。
+その中でも***invocations***は、同じテストを何回繰り返すかを指定するためのオプションです。
+
+```kotlin
+it("Sample Test").config(invocations = 3) {
+    // 3回実行される
+}
+```
+
+このように設定した場合、***beforeInvocation***/***afterInvocation***は3回それぞれの前後で呼び出され、各回のインデックス（0, 1, 2）を受け取ることができます。
+
+## 補足：スキップされたテストケースには呼ばれない
+
+各before/after関数にもテストケースが呼ばれない例外があります。
+それは、スキップされたテスト（無視・無効・非アクティブな状態のテスト）にはコールバックが呼ばれないという点です。
+
+公式ドキュメントにも、次のように明記されています：
+
+> If a test case was skipped (ignored / disabled / inactive), then this callback will not be invoked for that particular test case.
+
+### スキップされる例
+
+以下のようなケースでは特定のライフサイクル関数は呼び出されません。
+
+```kotlin
+xit("無効化されたテスト") {
+}
+
+it("無効化されたテスト").config(enabled = false) {
+
+}
+
 ```
 
 ## まとめ
-- beforeとafterはテストの前後処理を自動化するために使い、beforeTest/afterTest、beforeEach/afterEach、beforeAll/afterAllと使い分けが可能です。
-- beforeEachやafterEachを使うことで、個別のテストケースの前後で処理を行うことができ、テストが独立して実行されるようになります。
-- beforeAllやafterAllは、全体的なセットアップやクリーンアップを行うために使用します。
-
-テストの前後処理を適切に使いこなすことで、テストコードの可読性や保守性が向上し、効率的にテストを実行できるようになります。是非、beforeやafterを活用して、テストの品質を向上させましょう。
-
------------
+Kotestでは、テストの実行タイミングに応じてさまざまなライフサイクル関数が用意されています。
+どのタイミングでどの関数が呼ばれるのかを理解しておくことで、テストコードをより効率的かつ安全に構築することができます。
+是非、before/afterを上手に活用して、テストの品質を向上させましょう！！

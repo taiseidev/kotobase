@@ -4,7 +4,7 @@ export const siteConfig = {
   subtitle: '',
   description: '',
   image: {
-    src: '/hero.jpg',
+    src: '/main_image',
     alt: 'Website Main Image',
   },
   email: 'onishi.taisei1997@gmail.com',

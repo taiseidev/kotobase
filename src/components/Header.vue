@@ -81,7 +81,7 @@ function toggleNavDrawer() {
   >
     <div class="flex items-center h-full">
       <a href="/" class="text-2xl font-semibold tracking-wide text-primary hover:opacity-80 transition-opacity">
-        Kotobase
+        taiseidev
       </a>
 
       <!-- ロゴとナビの間にスペース（左マージン8 = 約2rem） -->

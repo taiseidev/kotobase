@@ -1,6 +1,6 @@
 export const siteConfig = {
   author: 'Taisei Onishi',
-  title: 'Kotobase',
+  title: 'taiseidev',
   subtitle: '',
   description: '',
   image: {

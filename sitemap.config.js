@@ -1,6 +1,6 @@
 // sitemap.config.js
 export default {
-  siteUrl: 'https://kotobase.netlify.app/',
+  siteUrl: 'https://taiseidev.com/',
   generateRobotsTxt: true,
   exclude: ['/404'],
 }

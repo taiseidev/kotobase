@@ -1,13 +1,23 @@
 ---
+import BaseHead from '@/components/BaseHead.astro'
+import Header from '@/components/Header.vue'
 
+const { ...head } = Astro.props
 ---
 
-<html>
+<!doctype html>
+<html lang="en">
   <head>
-    <meta http-equiv="refresh" content="0; url=/blog" />
+    <BaseHead {...head} />
+    <meta name="google-site-verification" content="FZGfyptLUiTwzMoQFS-U4peZoVGfrZqwAkWQnERV6X4" />
   </head>
-  <body>
-    <!-- ホーム画面を作成していないので、一旦blog画面にリダイレクト -->
-    <p>Redirecting to <a href="/blog">/blog</a>...</p>
+  <body
+    class="bg-main text-main min-h-screen font-sans w-full bg-dot flex flex-col cursor-pointer"
+    onclick="location.href='/blog'"
+  >
+    <Header client:load />
+    <main class="flex-1 flex flex-col items-center justify-center text-center pointer-events-none">
+      <h1 class="text-5xl font-bold mb-4">Hello,</h1>
+    </main>
   </body>
 </html>

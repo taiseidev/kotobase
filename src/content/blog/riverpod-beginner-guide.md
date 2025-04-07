@@ -6,6 +6,9 @@ date: 2023-6-7
 lang: ja-JP
 draft: false
 tag: Flutter, Dart, Riverpod
+image:
+  src: "/ogp/riverpod-beginner-guide.png"
+  alt: "riverpod-beginner-guide"
 ---
 
 ## はじめに

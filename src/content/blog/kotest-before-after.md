@@ -8,7 +8,7 @@ draft: false
 tag: Kotlin,Kotest,自動テスト
 image:
   src: "/ogp/kotest-before-after.png"
-  alt: "Jetpack ComposeのModifierの適用順序を図で解説した画像"
+  alt: "kotest-before-after`"
 ---
 
 ## はじめに

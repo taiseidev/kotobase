@@ -1,23 +1,36 @@
 ---
 import BaseHead from '@/components/BaseHead.astro'
 import Header from '@/components/Header.vue'
+import '../styles/animations.css'
 
 const { ...head } = Astro.props
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="ja">
   <head>
     <BaseHead {...head} />
     <meta name="google-site-verification" content="FZGfyptLUiTwzMoQFS-U4peZoVGfrZqwAkWQnERV6X4" />
   </head>
-  <body
-    class="bg-main text-main min-h-screen font-sans w-full bg-dot flex flex-col cursor-pointer"
-    onclick="location.href='/blog'"
-  >
+  <body class="bg-main text-main min-h-screen font-sans w-full bg-dot flex flex-col">
     <Header client:load />
-    <main class="flex-1 flex flex-col items-center justify-center text-center pointer-events-none">
-      <h1 class="text-5xl font-bold mb-4">Hello,</h1>
+    <main class="flex-1 flex flex-col items-center justify-center text-center px-6 animate-fade-in">
+      <div class="mb-6 animate-slide-up">
+        <img src="/favicon.svg" alt="taiseidev logo" class="w-24 h-24 mx-auto" />
+      </div>
+      <h1 class="text-5xl font-bold mb-4 animate-slide-up animation-delay-200">taiseidev blog</h1>
+      <p class="text-xl mb-8 max-w-2xl animate-slide-up animation-delay-400">
+        FlutterやAndroidを中心としたモバイルアプリ開発に関する技術ブログです。開発のヒントや実践的なノウハウをわかりやすく発信しています。
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 animate-slide-up animation-delay-600">
+        <a
+          href="/blog"
+          class="bg-primary text-white px-6 py-3 rounded-lg hover:opacity-90 transition-opacity font-medium flex items-center justify-center"
+        >
+          <span class="i-ri-article-line mr-2"></span>
+          ブログを読む
+        </a>
+      </div>
     </main>
   </body>
 </html>
